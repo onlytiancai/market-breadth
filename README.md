@@ -96,3 +96,6 @@ A 股使用 Tushare 获取，欢迎使用 https://tushare.pro/register?reg=27541
     pip3.6 install Cython
     pip3.6 install https://github.com/mrjbq7/ta-lib/archive/TA_Lib-0.4.8.zip
     pip3.6 install matplotlib seaborn install imgkit yfinance baostock html5lib pdfkit imgkit
+
+    export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
