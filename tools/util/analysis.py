@@ -69,7 +69,6 @@ def is_over(x, px):
     else:
         return 'N'
 
-
 def stock_gap_and_over(data):
     data[["date"]] = data[["date"]].astype(str)
     data['row_num'] = data.date.rank(method='min').astype(int)
@@ -86,23 +85,31 @@ def stock_gap_and_over(data):
     data_copy = data_copy.set_index(['code', 'row_num'])
     data = pd.merge(data, data_copy, how='left', on=['code', 'row_num'])
 
+    t = ['date', 'ts_code', 'open', 'high', 'low', 'close', 'vol', 'amount',
+       'ma_vol', 'vol_rate', 'ma_amt', 'amt_rate', 's_ma', 'm_ma', 'l_ma',
+       's_ema', 'm_ema', 'l_ema', 'cs', 'sm', 'ml', 'bais', 'ecs', 'esm',
+       'eml', 'ebais', 'pre_open', 'pre_high', 'pre_low', 'pre_close', 'pcs',
+       'psm', 'pml', 'pecs', 'pesm', 'peml']
+
+
+
     data['is_gap'] = data.apply(
-        lambda row: is_gap(row['high'], row['low'], row['close'], row['pre_high'], row['pre_low'], row['pre_close']),
+        lambda row: is_gap(row[t.index('high')], row[t.index('low')], row[t.index('close')], row[t.index('pre_high')], row[t.index('pre_low')], row[t.index('pre_close')]),
         axis=1, raw=True)
     data['is_esm_over'] = data.apply(
-        lambda row: is_over(row['esm'], row['pesm']),
+        lambda row: is_over(row[t.index('esm')], row[t.index('pesm')]),
         axis=1, raw=True)
     data['is_eml_over'] = data.apply(
-        lambda row: is_over(row['eml'], row['peml']),
+        lambda row: is_over(row[t.index('eml')], row[t.index('peml')]),
         axis=1, raw=True)
     data['is_cs_over'] = data.apply(
-        lambda row: is_over(row['cs'], row['pcs']),
+        lambda row: is_over(row[t.index('cs')], row[t.index('pcs')]),
         axis=1, raw=True)
     data['is_sm_over'] = data.apply(
-        lambda row: is_over(row['sm'], row['psm']),
+        lambda row: is_over(row[t.index('sm')], row[t.index('psm')]),
         axis=1, raw=True)
     data['is_ml_over'] = data.apply(
-        lambda row: is_over(row['ml'], row['pml']),
+        lambda row: is_over(row[t.index('ml')], row[t.index('pml')]),
         axis=1, raw=True)
     return data.reset_index()
 
@@ -131,8 +138,10 @@ def stock_turn_up(data, c, day):
     data = pd.merge(data, data_copy, how='left', on=['code', 'row_num'])
 
     column = 'is_{}_up'.format(c)
+
+    t = data.columns._data.tolist()
     data[column] = data.apply(
-        lambda row: is_turn_up(row['close'], row['pre_close'], row[close_ago], row[pre_close_ago]),
+        lambda row: is_turn_up(row[t.index('close')], row[t.index('pre_close')], row[t.index(close_ago)], row[t.index(pre_close_ago)]),
         axis=1, raw=True)
     return data.reset_index()
 

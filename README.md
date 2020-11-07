@@ -72,14 +72,27 @@ A 股使用 Tushare 获取，欢迎使用 https://tushare.pro/register?reg=27541
 #### 惊喜：
 在计算过程中该程序已经计算了全市场股票的 破线、交叉、拐头 等数据，您可以用 sql 在 mysql 中自行分析。
 
-#### 如果觉得对您有帮助，欢迎请我喝杯咖啡：
+### install on centos6
 
-+ 微信：
-<div>
-	<img src="./other/wechatpay.jpg" width="250">
-</div>
+    mysql -h127.0.0.1 -uroot -p stocks < config/sql/zh_stocks_info.sql
+    mysql -h127.0.0.1 -uroot -p stocks < config/sql/zh_stocks_d.sql
+    mysql -h127.0.0.1 -uroot -p stocks < config/sql/zh_stocks_sector_sw_d.sql
+    mysql -h127.0.0.1 -uroot -p stocks < config/sql/zh_stocks_industries_d.sql
 
-+ 支付宝：
-<div>
-	<img src="./other/alipay.jpg" width="250">
-</div>
+    wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+    tar -xzf ta-lib-0.4.0-src.tar.gz
+    cd ta-lib/
+    sudo ./configure
+    sudo make
+    sudo make install
+    pip3.6 install https://github.com/mrjbq7/ta-lib/archive/TA_Lib-0.4.8.zip
+
+    wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.centos6.x86_64.rpm
+    sudo yum install -y fontconfig libX11 libXext libXrender libjpeg libpng xorg-x11-fonts-75dpi xorg-x11-fonts-Type1
+    sudo rpm -i wkhtmltox-0.12.6-1.centos6.x86_64.rpm
+
+    pip3.6 install tushare
+    pip3.6 install opendatatools requests bs4 pandas TA-Lib sqlalchemy mysql-connector
+    pip3.6 install Cython
+    pip3.6 install https://github.com/mrjbq7/ta-lib/archive/TA_Lib-0.4.8.zip
+    pip3.6 install matplotlib seaborn install imgkit yfinance baostock html5lib pdfkit imgkit
